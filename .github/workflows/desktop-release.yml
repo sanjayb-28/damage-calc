@@ -102,7 +102,7 @@ jobs:
 
       - name: Build and publish universal macOS release
         id: tauri
-        uses: tauri-apps/tauri-action@v1
+        uses: tauri-apps/tauri-action@v0.6.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -120,9 +120,8 @@ jobs:
           releaseDraft: false
           prerelease: false
           generateReleaseNotes: true
-          uploadUpdaterJson: true
-          uploadUpdaterSignatures: true
-          uploadWorkflowArtifacts: true
+          includeUpdaterJson: true
+          updaterJsonKeepUniversal: true
           retryAttempts: 2
           args: --target universal-apple-darwin --config src-tauri/tauri.release.conf.json
 

@@ -43,8 +43,11 @@ invariant(
 );
 invariant(desktopIgnore.split(/\r?\n/).includes('.keys/'), 'desktop/.keys must remain ignored');
 invariant(/setInterval\(checkForUpdate/.test(runtime), 'The app must periodically check for updates');
-invariant(/tauri-apps\/tauri-action@v1/.test(releaseWorkflow), 'Release workflow must use tauri-action v1');
-invariant(/uploadUpdaterJson: true/.test(releaseWorkflow), 'Release workflow must upload latest.json');
+invariant(
+  /tauri-apps\/tauri-action@v0\.6\.2/.test(releaseWorkflow),
+  'Release workflow must use the current published tauri-action',
+);
+invariant(/includeUpdaterJson: true/.test(releaseWorkflow), 'Release workflow must upload latest.json');
 
 const trackedKeys = execFileSync('git', ['ls-files', 'desktop/.keys'], {
   cwd: rootDir,
