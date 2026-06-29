@@ -18,6 +18,7 @@ test('desktop build is isolated and branded', async () => {
   assert.match(html, /window\.gtag = function \(\) \{\}/);
   assert.doesNotMatch(html, /pokemonshowdownbeta/);
   assert.match(html, /desktop-app-header/);
+  assert.match(html, /desktop-update-button[^>]*>Check for updates/);
   assert.match(html, /set-selector/);
   assert.match(html, /move-selector/);
   assert.match(html, /class="field"/);
@@ -41,7 +42,13 @@ test('desktop background is procedural and move colors are live', async () => {
   assert.match(runtime, /syncMoveWidget\(this\)/);
   assert.match(runtime, /installDesktopMoveSelectors/);
   assert.match(runtime, /Search moves/);
-  assert.match(runtime, /closeDetachedSelect2/);
+  assert.match(runtime, /selectMoveOption/);
+  assert.match(runtime, /options\.addEventListener\('pointerdown'/);
+  assert.doesNotMatch(runtime, /select2\('close'\)/);
+  assert.match(runtime, /isDropdownScrollInteraction/);
+  assert.match(runtime, /dropdownScrollGuardUntil/);
+  assert.match(runtime, /Checking for updates/);
+  assert.match(runtime, /You’re up to date/);
   assert.match(css, /overscroll-behavior: contain/);
   assert.doesNotMatch(css, /motion-field\.png/);
 });

@@ -207,6 +207,15 @@
     widget.search.focus({preventScroll: true});
   }
 
+  function selectMoveOption(widget, option) {
+    if (!widget || !option) return;
+    widget.select.value = option.dataset.value;
+    widget.button.textContent = selectedMoveLabel(widget.select);
+    widget.select.dispatchEvent(new Event('change', {bubbles: true}));
+    closeMoveMenu();
+    widget.button.focus({preventScroll: true});
+  }
+
   function installDesktopMoveSelectors() {
     Array.prototype.forEach.call(document.querySelectorAll('select.move-selector'), function (select, index) {
       if (select._desktopMoveWidget) {
@@ -269,17 +278,20 @@
         }
         if (event.key === 'Enter') {
           var match = options.querySelector('.desktop-move-option');
-          if (match) match.click();
+          if (match) selectMoveOption(widget, match);
         }
+      });
+      options.addEventListener('pointerdown', function (event) {
+        var option = event.target.closest('.desktop-move-option');
+        if (!option || (typeof event.button === 'number' && event.button !== 0)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        selectMoveOption(widget, option);
       });
       options.addEventListener('click', function (event) {
         var option = event.target.closest('.desktop-move-option');
-        if (!option) return;
-        select.value = option.dataset.value;
-        button.textContent = selectedMoveLabel(select);
-        select.dispatchEvent(new Event('change', {bubbles: true}));
-        closeMoveMenu();
-        button.focus({preventScroll: true});
+        if (!option || menu.hidden) return;
+        selectMoveOption(widget, option);
       });
       options.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') closeMoveMenu();
@@ -287,23 +299,22 @@
     });
   }
 
-  var lastPageScrollX = window.scrollX;
-  var lastPageScrollY = window.scrollY;
+  var dropdownScrollGuardUntil = 0;
+  var dropdownPointerActive = false;
 
-  function closeDetachedSelect2(event) {
-    if (!window.jQuery) return;
-    var target = event.target;
-    if (target && target.closest && target.closest('.select2-results')) return;
+  function dropdownContainer(target) {
+    if (!target || !target.closest) return null;
+    return target.closest(
+      '.desktop-move-menu, .select2-container, .select2-drop, .select2-results, .select2-search'
+    );
+  }
 
-    var pageScrolled = window.scrollX !== lastPageScrollX || window.scrollY !== lastPageScrollY;
-    lastPageScrollX = window.scrollX;
-    lastPageScrollY = window.scrollY;
-    if (event.type !== 'resize' && !pageScrolled) return;
+  function markDropdownScroll(event) {
+    if (dropdownContainer(event.target)) dropdownScrollGuardUntil = Date.now() + 300;
+  }
 
-    window.jQuery('select.select2-offscreen, input.select2-offscreen').each(function () {
-      var $element = window.jQuery(this);
-      if ($element.data('select2') && $element.select2('opened')) $element.select2('close');
-    });
+  function isDropdownScrollInteraction(event) {
+    return Boolean(dropdownContainer(event.target)) || dropdownPointerActive || Date.now() < dropdownScrollGuardUntil;
   }
 
   document.addEventListener('change', queueDesktopMoveStateSync);
@@ -327,43 +338,75 @@
   window.setTimeout(installDesktopMoveSelectors, 250);
   window.setTimeout(installDesktopMoveSelectors, 750);
   document.addEventListener('pointerdown', closeMoveMenu);
-  document.addEventListener('scroll', function (event) {
-    var target = event.target;
-    if (target && target.closest && target.closest('.desktop-move-options, .select2-results')) return;
-    closeMoveMenu();
-    closeDetachedSelect2(event);
+  document.addEventListener('pointerdown', function (event) {
+    dropdownPointerActive = Boolean(dropdownContainer(event.target));
+    if (dropdownPointerActive) markDropdownScroll(event);
   }, true);
-  window.addEventListener('resize', function (event) {
+  document.addEventListener('pointerup', function () {
+    dropdownPointerActive = false;
+  }, true);
+  document.addEventListener('pointercancel', function () {
+    dropdownPointerActive = false;
+  }, true);
+  document.addEventListener('wheel', markDropdownScroll, {capture: true, passive: true});
+  document.addEventListener('touchmove', markDropdownScroll, {capture: true, passive: true});
+  document.addEventListener('scroll', function (event) {
+    if (isDropdownScrollInteraction(event)) return;
     closeMoveMenu();
-    closeDetachedSelect2(event);
+  }, true);
+  window.addEventListener('resize', function () {
+    closeMoveMenu();
   }, {passive: true});
 
   var tauri = window.__TAURI__;
   var updateButton = document.querySelector('.desktop-update-button');
   var updateCheckInFlight = false;
   var lastUpdateCheck = 0;
+  var updateStatusTimer = 0;
+  var defaultUpdateLabel = 'Check for updates';
 
   async function invoke(command, args) {
     if (!tauri || !tauri.core || !tauri.core.invoke) return null;
     return tauri.core.invoke(command, args || {});
   }
 
-  async function checkForUpdate() {
-    if (!updateButton || !tauri || updateCheckInFlight) return;
+  function resetUpdateButton(message, delay) {
+    window.clearTimeout(updateStatusTimer);
+    updateButton.textContent = message || defaultUpdateLabel;
+    updateButton.disabled = false;
+    delete updateButton.dataset.version;
+    updateButton.removeAttribute('title');
+    if (delay) {
+      updateStatusTimer = window.setTimeout(function () {
+        updateButton.textContent = defaultUpdateLabel;
+      }, delay);
+    }
+  }
+
+  async function checkForUpdate(manual) {
+    if (!updateButton || !tauri || updateCheckInFlight) return null;
     updateCheckInFlight = true;
     lastUpdateCheck = Date.now();
+    if (manual) {
+      updateButton.disabled = true;
+      updateButton.textContent = 'Checking for updates…';
+    }
     try {
       var update = await invoke('check_for_update');
       if (!update) {
-        updateButton.hidden = true;
-        return;
+        resetUpdateButton(manual ? 'You’re up to date' : defaultUpdateLabel, manual ? 2500 : 0);
+        return null;
       }
       updateButton.hidden = false;
+      updateButton.disabled = false;
       updateButton.textContent = 'Update to ' + update.version;
       updateButton.dataset.version = update.version;
       if (update.notes) updateButton.title = update.notes;
+      return update;
     } catch (error) {
+      if (manual) resetUpdateButton('Update check failed — retry');
       console.warn('Update check failed', error);
+      return null;
     } finally {
       updateCheckInFlight = false;
     }
@@ -371,6 +414,10 @@
 
   if (updateButton) {
     updateButton.addEventListener('click', async function () {
+      if (!updateButton.dataset.version) {
+        await checkForUpdate(true);
+        return;
+      }
       updateButton.disabled = true;
       updateButton.textContent = 'Installing update…';
       try {
@@ -381,6 +428,7 @@
         console.error('Update install failed', error);
       }
     });
+    if (!tauri) updateButton.hidden = true;
   }
 
   document.addEventListener('click', function (event) {

@@ -41,7 +41,7 @@ function desktopHeader() {
       <img src="./desktop/assets/app-icon.webp" alt="" width="30" height="30" />
       <span>Pokémon Damage Calculator</span>
     </div>
-    <button class="desktop-update-button" type="button" hidden>Check for updates</button>
+    <button class="desktop-update-button" type="button">Check for updates</button>
   </header>`;
 }
 
