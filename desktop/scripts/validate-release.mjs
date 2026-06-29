@@ -50,8 +50,8 @@ invariant(
 );
 invariant(/includeUpdaterJson: true/.test(releaseWorkflow), 'Release workflow must upload latest.json');
 invariant(
-  /PKMN\.DMG\.Calc_#\{version\}_universal\.dmg/.test(homebrewCask),
-  'Homebrew cask must use the normalized GitHub release asset name',
+  /releases\/latest\/download\/PKMN\.DMG\.Calc_universal\.dmg/.test(homebrewCask),
+  'Homebrew cask must use the stable latest-release DMG',
 );
 
 const trackedKeys = execFileSync('git', ['ls-files', 'desktop/.keys'], {

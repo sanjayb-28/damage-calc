@@ -24,7 +24,7 @@ Artifacts are written under `desktop/src-tauri/target/release/bundle/`.
 
 ## Upstream updates
 
-The `Sync upstream and release` workflow checks `smogon/damage-calc` every six hours. When upstream has changed, it:
+The `Sync upstream and release` workflow checks `smogon/damage-calc` every three days. When upstream has changed, it:
 
 1. merges `upstream/master` into this fork's `master` branch;
 2. installs dependencies and runs the calculator and desktop-overlay tests;
@@ -62,6 +62,14 @@ The app checks the GitHub updater feed at launch, every six hours while open, an
 - attaches a versioned Homebrew cask with the correct DMG checksum.
 
 No Apple Developer membership is required. Because the app is not Apple-notarized, the Homebrew cask removes only the installed app's quarantine attribute.
+
+Install the current release from the dedicated tap:
+
+```sh
+brew install --cask sanjayb-28/pkmn-dmg-calc/pkmn-dmg-calc
+```
+
+The tap uses a stable latest-release DMG. After installation, the app's signed in-app updater handles new versions automatically.
 
 ### One-time repository setup
 

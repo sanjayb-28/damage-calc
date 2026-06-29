@@ -140,10 +140,12 @@ jobs:
             echo "::error::Universal DMG was not generated."
             exit 1
           fi
-          SHA256="$(shasum -a 256 "$DMG" | awk '{print $1}')"
-          sed -e "s/__VERSION__/$VERSION/g" -e "s/__DMG_SHA256__/$SHA256/g" \
-            desktop/homebrew/pkmn-dmg-calc.rb.template > "$RUNNER_TEMP/pkmn-dmg-calc.rb"
-          gh release upload "desktop-v$VERSION" "$RUNNER_TEMP/pkmn-dmg-calc.rb" --clobber
+          cp "$DMG" "$RUNNER_TEMP/PKMN.DMG.Calc_universal.dmg"
+          cp desktop/homebrew/pkmn-dmg-calc.rb.template "$RUNNER_TEMP/pkmn-dmg-calc.rb"
+          gh release upload "desktop-v$VERSION" \
+            "$RUNNER_TEMP/PKMN.DMG.Calc_universal.dmg" \
+            "$RUNNER_TEMP/pkmn-dmg-calc.rb" \
+            --clobber
 
       - name: Verify published updater feed
         env:

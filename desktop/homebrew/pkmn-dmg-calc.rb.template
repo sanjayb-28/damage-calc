@@ -1,14 +1,14 @@
 cask "pkmn-dmg-calc" do
-  version "__VERSION__"
-  sha256 "__DMG_SHA256__"
+  version :latest
+  sha256 :no_check
 
-  url "https://github.com/sanjayb-28/damage-calc/releases/download/desktop-v#{version}/PKMN.DMG.Calc_#{version}_universal.dmg"
+  url "https://github.com/sanjayb-28/damage-calc/releases/latest/download/PKMN.DMG.Calc_universal.dmg"
   name "PKMN DMG Calc"
   desc "Desktop Pokémon damage calculator"
   homepage "https://github.com/sanjayb-28/damage-calc"
 
   auto_updates true
-  depends_on macos: ">= :catalina"
+  depends_on macos: :catalina
 
   app "PKMN DMG Calc.app"
 
