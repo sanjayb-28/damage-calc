@@ -18,6 +18,8 @@ test('desktop build is isolated and branded', async () => {
   assert.match(html, /window\.gtag = function \(\) \{\}/);
   assert.doesNotMatch(html, /pokemonshowdownbeta/);
   assert.match(html, /desktop-app-header/);
+  assert.match(html, /desktop-theme-button/);
+  assert.match(html, /desktopTheme/);
   assert.match(html, /desktop-update-button[^>]*>Check for updates/);
   assert.match(html, /set-selector/);
   assert.match(html, /move-selector/);
@@ -49,6 +51,9 @@ test('desktop background is procedural and move colors are live', async () => {
   assert.match(runtime, /dropdownScrollGuardUntil/);
   assert.match(runtime, /Checking for updates/);
   assert.match(runtime, /You’re up to date/);
+  assert.match(runtime, /applyTheme/);
+  assert.match(runtime, /prefers-color-scheme: light/);
+  assert.match(css, /data-desktop-theme="light"/);
   assert.match(css, /overscroll-behavior: contain/);
   assert.doesNotMatch(css, /motion-field\.png/);
 });

@@ -41,7 +41,19 @@ function desktopHeader() {
       <img src="./desktop/assets/app-icon.webp" alt="" width="30" height="30" />
       <span>Pokémon Damage Calculator</span>
     </div>
-    <button class="desktop-update-button" type="button">Check for updates</button>
+    <div class="desktop-header-actions">
+      <button class="desktop-theme-button" type="button" aria-label="Switch to light mode">
+        <svg class="desktop-theme-icon desktop-theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.5"></circle>
+          <path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path>
+        </svg>
+        <svg class="desktop-theme-icon desktop-theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"></path>
+        </svg>
+        <span class="desktop-theme-label">Light mode</span>
+      </button>
+      <button class="desktop-update-button" type="button">Check for updates</button>
+    </div>
   </header>`;
 }
 
@@ -76,6 +88,7 @@ async function transformHtml(file) {
       '</head>',
       '    <meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; connect-src \'self\' https://github.com; font-src \'self\' data:; object-src \'none\'; base-uri \'none\'; form-action \'self\'">\n' +
       '    <script>window.gtag = function () {};</script>\n' +
+      '    <script>(function () { var saved; try { saved = localStorage.getItem("desktopTheme"); } catch (_) {} var theme = saved === "light" || saved === "dark" ? saved : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.dataset.desktopTheme = theme; var darkTheme = document.getElementById("dark-theme-styles"); if (darkTheme) darkTheme.disabled = theme === "light"; }());</script>\n' +
       '    <link rel="stylesheet" href="./desktop/desktop.css">\n</head>'
     )
     .replace('</body>', '    <script src="./desktop/desktop.js"></script>\n</body>');
@@ -92,9 +105,11 @@ async function transformHtml(file) {
 
   const desktopMarkers = [
     'desktop-app-header',
+    'desktop-theme-button',
     'desktop/desktop.css',
     'desktop/desktop.js',
     'window.gtag = function () {}',
+    'desktopTheme',
     'desktop-app',
     ...requiredMarkers[file],
   ];

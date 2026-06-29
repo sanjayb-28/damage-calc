@@ -9,6 +9,58 @@
   root.classList.add('desktop-shell');
   body.classList.add('desktop-app');
 
+  var themeButton = document.querySelector('.desktop-theme-button');
+  var themeLabel = document.querySelector('.desktop-theme-label');
+  var darkThemeStylesheet = document.getElementById('dark-theme-styles');
+  var themeMedia = window.matchMedia('(prefers-color-scheme: light)');
+
+  function savedTheme() {
+    try {
+      var value = window.localStorage.getItem('desktopTheme');
+      return value === 'light' || value === 'dark' ? value : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function updateThemeButton(theme) {
+    if (!themeButton || !themeLabel) return;
+    var nextTheme = theme === 'light' ? 'dark' : 'light';
+    themeLabel.textContent = nextTheme === 'light' ? 'Light mode' : 'Dark mode';
+    themeButton.setAttribute('aria-label', 'Switch to ' + nextTheme + ' mode');
+    themeButton.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+    themeButton.title = 'Switch to ' + nextTheme + ' mode';
+  }
+
+  function applyTheme(theme, persist) {
+    var resolvedTheme = theme === 'light' ? 'light' : 'dark';
+    root.dataset.desktopTheme = resolvedTheme;
+    body.classList.toggle('dark-theme', resolvedTheme === 'dark');
+    if (darkThemeStylesheet) darkThemeStylesheet.disabled = resolvedTheme === 'light';
+    updateThemeButton(resolvedTheme);
+    if (persist) {
+      try {
+        window.localStorage.setItem('desktopTheme', resolvedTheme);
+      } catch (_) {}
+    }
+  }
+
+  var initialTheme = savedTheme() || root.dataset.desktopTheme || (themeMedia.matches ? 'light' : 'dark');
+  applyTheme(initialTheme, false);
+
+  if (themeButton) {
+    themeButton.addEventListener('click', function () {
+      applyTheme(root.dataset.desktopTheme === 'light' ? 'dark' : 'light', true);
+    });
+  }
+
+  function handleSystemThemeChange(event) {
+    if (!savedTheme()) applyTheme(event.matches ? 'light' : 'dark', false);
+  }
+
+  if (themeMedia.addEventListener) themeMedia.addEventListener('change', handleSystemThemeChange);
+  else if (themeMedia.addListener) themeMedia.addListener(handleSystemThemeChange);
+
   function installMotionField() {
     var canvas = document.createElement('canvas');
     canvas.className = 'desktop-motion-field';
@@ -59,7 +111,9 @@
     function draw(time) {
       context.clearRect(0, 0, width, height);
       var phase = time * 0.00055;
-      context.fillStyle = 'rgba(142, 156, 181, 0.3)';
+      context.fillStyle = root.dataset.desktopTheme === 'light'
+        ? 'rgba(70, 91, 126, 0.17)'
+        : 'rgba(142, 156, 181, 0.3)';
 
       dots.forEach(function (dot) {
         var x = dot.baseX + Math.sin(phase + dot.flowOffset) * 7;
