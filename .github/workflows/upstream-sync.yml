@@ -1,0 +1,113 @@
+name: Sync upstream and release
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  issues: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'sanjayb-28/damage-calc'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out fork
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/smogon/damage-calc.git
+          git fetch --no-tags upstream master
+
+      - name: Detect upstream changes
+        id: changes
+        run: |
+          if git merge-base --is-ancestor upstream/master HEAD; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Merge upstream
+        id: merge
+        if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git merge --no-edit upstream/master; then
+            echo "conflict=false" >> "$GITHUB_OUTPUT"
+          else
+            git merge --abort
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report merge conflict
+        if: steps.merge.outputs.conflict == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Automated upstream sync needs attention"
+          EXISTING="$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty' || true)"
+          if [[ -z "$EXISTING" ]]; then
+            gh issue create \
+              --title "$TITLE" \
+              --body "The scheduled merge of smogon/damage-calc master into this fork conflicted. Resolve the merge locally; the normal desktop release workflow will run after the fix is pushed." || true
+          fi
+          exit 1
+
+      - name: Set up Node.js
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - name: Install dependencies
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          npm ci
+          npm ci --prefix desktop
+
+      - name: Test merged calculator and desktop overlay
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          npm test
+          PKMN_DESKTOP_SKIP_UPSTREAM_BUILD=1 npm run prepare:desktop --prefix desktop
+          npm test --prefix desktop
+          npm run release:check --prefix desktop
+        env:
+          CI: true
+
+      - name: Push synchronized source
+        if: steps.changes.outputs.changed == 'true'
+        run: git push origin HEAD:master
+
+      - name: Dispatch desktop release
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHORT_SHA="$(git rev-parse --short HEAD)"
+          gh workflow run desktop-release.yml \
+            --ref master \
+            -f reason="Automated upstream sync at $SHORT_SHA"
+
+      - name: Summarize no-op
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "Fork already contains upstream/master; no release was created." >> "$GITHUB_STEP_SUMMARY"

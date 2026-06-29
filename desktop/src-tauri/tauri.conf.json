@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PKMN DMG Calc",
+  "version": "0.1.0",
+  "identifier": "dev.sanjaybaskaran.pkmn-dmg-calc",
+  "build": {
+    "beforeDevCommand": "npm run prepare:desktop && npx http-server dist -p 4173 -c-1",
+    "devUrl": "http://localhost:4173",
+    "beforeBuildCommand": "npm run prepare:desktop",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Pokémon Damage Calculator",
+        "width": 1600,
+        "height": 1000,
+        "minWidth": 1100,
+        "minHeight": 720,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "useHttpsScheme": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": false,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "signingIdentity": "-"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZDNjRGMzlBREM3QzYzRDQKUldUVVkzemNtdk5rL05TVDNXYlUrdzRObE9CWkwrYmVwT1NINlJyYlJFSE1LeVdlS1BkdEpvSWoK",
+      "endpoints": [
+        "https://github.com/sanjayb-28/damage-calc/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

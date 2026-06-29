@@ -1,0 +1,67 @@
+name: Desktop CI
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - ".github/workflows/desktop-*.yml"
+      - "build"
+      - "calc/**"
+      - "desktop/**"
+      - "package.json"
+      - "package-lock.json"
+      - "src/**"
+      - "subpkg"
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/desktop-ci.yml"
+      - "desktop/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Install calculator dependencies
+        run: npm ci
+
+      - name: Install desktop dependencies
+        run: npm ci
+        working-directory: desktop
+
+      - name: Test calculator
+        run: npm test
+        env:
+          CI: true
+
+      - name: Test desktop overlay and release configuration
+        run: |
+          PKMN_DESKTOP_SKIP_UPSTREAM_BUILD=1 npm run prepare:desktop
+          npm test
+          npm run release:check
+        working-directory: desktop
+
+      - name: Check Rust formatting
+        run: cargo fmt --check --manifest-path desktop/src-tauri/Cargo.toml

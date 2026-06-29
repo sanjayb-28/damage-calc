@@ -1,0 +1,170 @@
+name: Desktop release
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/desktop-release.yml"
+      - "build"
+      - "calc/**"
+      - "desktop/**"
+      - "package.json"
+      - "package-lock.json"
+      - "src/**"
+      - "subpkg"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Optional release version; leave blank to increment the latest desktop tag
+        required: false
+        default: ""
+        type: string
+      reason:
+        description: Optional release note describing why this build was triggered
+        required: false
+        default: "Manual desktop release"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'sanjayb-28/damage-calc'
+    runs-on: macos-14
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Install calculator dependencies
+        run: npm ci
+
+      - name: Install desktop dependencies
+        run: npm ci
+        working-directory: desktop
+
+      - name: Test calculator
+        run: npm test
+        env:
+          CI: true
+
+      - name: Prepare and test desktop overlay
+        run: |
+          PKMN_DESKTOP_SKIP_UPSTREAM_BUILD=1 npm run prepare:desktop
+          npm test
+          npm run release:check
+        working-directory: desktop
+
+      - name: Resolve release version
+        id: version
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          VERSION="$(node desktop/scripts/next-version.mjs "$REQUESTED_VERSION" $(git tag -l 'desktop-v*'))"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Desktop release version: $VERSION"
+
+      - name: Apply release version
+        run: |
+          npm run version:set -- "${{ steps.version.outputs.version }}"
+          npm run release:check
+        working-directory: desktop
+
+      - name: Require updater signing key
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [[ -z "$TAURI_SIGNING_PRIVATE_KEY" ]]; then
+            echo "::error::Add desktop/.keys/updater.key as the TAURI_SIGNING_PRIVATE_KEY repository secret."
+            exit 1
+          fi
+
+      - name: Build and publish universal macOS release
+        id: tauri
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: desktop
+          tagName: desktop-v__VERSION__
+          releaseName: PKMN DMG Calc v__VERSION__
+          releaseBody: |
+            Universal macOS desktop build of the current calculator source.
+
+            Source commit: `${{ github.sha }}`
+            Trigger: ${{ inputs.reason || github.event_name }}
+          releaseCommitish: ${{ github.sha }}
+          releaseDraft: false
+          prerelease: false
+          generateReleaseNotes: true
+          uploadUpdaterJson: true
+          uploadUpdaterSignatures: true
+          uploadWorkflowArtifacts: true
+          retryAttempts: 2
+          args: --target universal-apple-darwin --config src-tauri/tauri.release.conf.json
+
+      - name: Generate and upload Homebrew cask
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          DMG="$(find desktop/src-tauri/target/universal-apple-darwin/release/bundle/dmg -name '*.dmg' -print -quit)"
+          if [[ -z "$DMG" ]]; then
+            echo "::error::Universal DMG was not generated."
+            exit 1
+          fi
+          SHA256="$(shasum -a 256 "$DMG" | awk '{print $1}')"
+          sed -e "s/__VERSION__/$VERSION/g" -e "s/__DMG_SHA256__/$SHA256/g" \
+            desktop/homebrew/pkmn-dmg-calc.rb.template > "$RUNNER_TEMP/pkmn-dmg-calc.rb"
+          gh release upload "desktop-v$VERSION" "$RUNNER_TEMP/pkmn-dmg-calc.rb" --clobber
+
+      - name: Verify published updater feed
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          FEED="$RUNNER_TEMP/latest.json"
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error --location \
+              "https://github.com/sanjayb-28/damage-calc/releases/latest/download/latest.json" \
+              --output "$FEED"; then
+              break
+            fi
+            sleep 5
+          done
+          node desktop/scripts/verify-update-feed.mjs "$FEED" "$VERSION"
+
+      - name: Publish release summary
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          {
+            echo "## PKMN DMG Calc v$VERSION"
+            echo
+            echo "- Universal macOS app and DMG published"
+            echo "- Signed Tauri updater artifacts published"
+            echo "- latest.json verified"
+            echo "- Homebrew cask attached to the release"
+          } >> "$GITHUB_STEP_SUMMARY"

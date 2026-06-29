@@ -1,0 +1,21 @@
+[package]
+name = "pkmn-dmg-calc"
+version = "0.1.0"
+description = "A focused desktop build of the Pokémon damage calculator"
+authors = ["Sanjay Baskaran"]
+edition = "2021"
+
+[lib]
+name = "pkmn_dmg_calc"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.6.3", features = [] }
+
+[dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+tauri = { version = "2.11.3", features = [] }
+tauri-plugin-opener = "2.5.4"
+tauri-plugin-updater = "2.10.1"
+url = "2.5.7"
