@@ -117,6 +117,36 @@
     return option ? option.text : 'Choose move';
   }
 
+  function syncMoveWidget(select) {
+    var widget = select && select._desktopMoveWidget;
+    if (!widget) return;
+    widget.button.textContent = selectedMoveLabel(select);
+    if (activeMoveWidget === widget) renderMoveOptions(widget, widget.search.value);
+  }
+
+  function syncMoveWidgets() {
+    Array.prototype.forEach.call(document.querySelectorAll('select.move-selector'), syncMoveWidget);
+  }
+
+  function syncDesktopMoveState() {
+    syncMoveTypes();
+    syncMoveWidgets();
+  }
+
+  var desktopMoveStateFrame = 0;
+  var desktopMoveStateTimer = 0;
+
+  function queueDesktopMoveStateSync() {
+    if (!desktopMoveStateFrame) {
+      desktopMoveStateFrame = window.requestAnimationFrame(function () {
+        desktopMoveStateFrame = 0;
+        syncDesktopMoveState();
+      });
+    }
+    window.clearTimeout(desktopMoveStateTimer);
+    desktopMoveStateTimer = window.setTimeout(syncDesktopMoveState, 80);
+  }
+
   function closeMoveMenu() {
     if (!activeMoveWidget) return;
     activeMoveWidget.menu.hidden = true;
@@ -180,7 +210,7 @@
   function installDesktopMoveSelectors() {
     Array.prototype.forEach.call(document.querySelectorAll('select.move-selector'), function (select, index) {
       if (select._desktopMoveWidget) {
-        select._desktopMoveWidget.button.textContent = selectedMoveLabel(select);
+        syncMoveWidget(select);
         return;
       }
 
@@ -276,24 +306,24 @@
     });
   }
 
-  document.addEventListener('change', function (event) {
-    if (event.target && event.target._desktopMoveWidget) {
-      event.target._desktopMoveWidget.button.textContent = selectedMoveLabel(event.target);
-    }
-    window.requestAnimationFrame(syncMoveTypes);
-    window.setTimeout(syncMoveTypes, 40);
-  });
+  document.addEventListener('change', queueDesktopMoveStateSync);
 
   if (window.jQuery) {
-    window.jQuery(document).on('change.desktopMoveColor', '.move-selector, .move-type', function () {
-      window.requestAnimationFrame(syncMoveTypes);
-      window.setTimeout(syncMoveTypes, 40);
-    });
+    window.jQuery(document).on(
+      'change.desktopMoveState',
+      '.move-selector, .move-type, .set-selector, input[name="gen"]',
+      function () {
+        queueDesktopMoveStateSync();
+      }
+    );
 
+    window.jQuery(document).on('change.desktopMoveState', '.move-selector', function () {
+      syncMoveWidget(this);
+    });
   }
 
-  syncMoveTypes();
-  window.setTimeout(syncMoveTypes, 250);
+  syncDesktopMoveState();
+  window.setTimeout(syncDesktopMoveState, 250);
   window.setTimeout(installDesktopMoveSelectors, 250);
   window.setTimeout(installDesktopMoveSelectors, 750);
   document.addEventListener('pointerdown', closeMoveMenu);

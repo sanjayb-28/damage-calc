@@ -75,6 +75,7 @@ async function transformHtml(file) {
     .replace(
       '</head>',
       '    <meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; connect-src \'self\' https://github.com; font-src \'self\' data:; object-src \'none\'; base-uri \'none\'; form-action \'self\'">\n' +
+      '    <script>window.gtag = function () {};</script>\n' +
       '    <link rel="stylesheet" href="./desktop/desktop.css">\n</head>'
     )
     .replace('</body>', '    <script src="./desktop/desktop.js"></script>\n</body>');
@@ -93,6 +94,7 @@ async function transformHtml(file) {
     'desktop-app-header',
     'desktop/desktop.css',
     'desktop/desktop.js',
+    'window.gtag = function () {}',
     'desktop-app',
     ...requiredMarkers[file],
   ];

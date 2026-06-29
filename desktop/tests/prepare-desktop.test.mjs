@@ -15,6 +15,7 @@ test('desktop build is isolated and branded', async () => {
   assert.match(html, /desktop\/desktop\.css/);
   assert.match(html, /desktop\/desktop\.js/);
   assert.doesNotMatch(html, /googletagmanager|gtag\(/);
+  assert.match(html, /window\.gtag = function \(\) \{\}/);
   assert.doesNotMatch(html, /pokemonshowdownbeta/);
   assert.match(html, /desktop-app-header/);
   assert.match(html, /set-selector/);
@@ -35,8 +36,9 @@ test('desktop background is procedural and move colors are live', async () => {
   const css = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.css'), 'utf8');
   const runtime = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.js'), 'utf8');
   assert.match(runtime, /desktop-motion-field/);
-  assert.match(runtime, /requestAnimationFrame\(syncMoveTypes\)/);
-  assert.match(runtime, /change\.desktopMoveColor/);
+  assert.match(runtime, /queueDesktopMoveStateSync/);
+  assert.match(runtime, /change\.desktopMoveState/);
+  assert.match(runtime, /syncMoveWidget\(this\)/);
   assert.match(runtime, /installDesktopMoveSelectors/);
   assert.match(runtime, /Search moves/);
   assert.match(runtime, /closeDetachedSelect2/);
