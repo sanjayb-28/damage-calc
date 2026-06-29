@@ -16,6 +16,10 @@ test('desktop build is isolated and branded', async () => {
   assert.match(html, /desktop\/desktop\.js/);
   assert.doesNotMatch(html, /googletagmanager|gtag\(/);
   assert.doesNotMatch(html, /pokemonshowdownbeta/);
+  assert.match(html, /desktop-app-header/);
+  assert.match(html, /set-selector/);
+  assert.match(html, /move-selector/);
+  assert.match(html, /class="field"/);
 });
 
 test('desktop build vendors runtime scripts', async () => {
@@ -23,6 +27,8 @@ test('desktop build vendors runtime scripts', async () => {
   const honkalculate = await readFile(path.join(desktopDir, 'dist', 'honkalculate.html'), 'utf8');
   assert.doesNotMatch(randoms, /src="https:\/\/data\.pkmn\.cc/);
   assert.doesNotMatch(honkalculate, /(?:src|url\()=?["']?https:\/\/(?:maxcdn\.bootstrapcdn|cdn\.datatables)/);
+  assert.match(honkalculate, /id="holder-0"/);
+  assert.match(honkalculate, /id="holder-2"/);
 });
 
 test('desktop background is procedural and move colors are live', async () => {

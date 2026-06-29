@@ -16,6 +16,14 @@ const htmlFiles = [
   'honkalculate.html',
 ];
 
+const requiredMarkers = {
+  'index.html': ['set-selector', 'move-selector', 'class="field"'],
+  'randoms.html': ['set-selector', 'move-selector', 'class="field"'],
+  'oms.html': ['set-selector', 'move-selector', 'class="field"'],
+  'champions.html': ['set-selector', 'move-selector', 'class="field"'],
+  'honkalculate.html': ['set-selector', 'move-selector', 'id="holder-0"', 'id="holder-2"'],
+};
+
 const allowedRemoteAssets = new Set([
   'data.pkmn.cc',
   'maxcdn.bootstrapcdn.com',
@@ -79,6 +87,19 @@ async function transformHtml(file) {
   for (const remoteUrl of remoteUrls) {
     const localUrl = await vendorRemoteAsset(remoteUrl);
     if (localUrl !== remoteUrl) html = html.replaceAll(remoteUrl, localUrl);
+  }
+
+  const desktopMarkers = [
+    'desktop-app-header',
+    'desktop/desktop.css',
+    'desktop/desktop.js',
+    'desktop-app',
+    ...requiredMarkers[file],
+  ];
+  for (const marker of desktopMarkers) {
+    if (!html.includes(marker)) {
+      throw new Error(`${file} is missing required desktop integration marker: ${marker}`);
+    }
   }
 
   await writeFile(filePath, html);
