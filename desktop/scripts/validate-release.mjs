@@ -21,6 +21,7 @@ const releaseConfig = JSON.parse(await read('desktop/src-tauri/tauri.release.con
 const cargoToml = await read('desktop/src-tauri/Cargo.toml');
 const runtime = await read('desktop/runtime/desktop.js');
 const desktopIgnore = await read('desktop/.gitignore');
+const homebrewCask = await read('desktop/homebrew/pkmn-dmg-calc.rb.template');
 const releaseWorkflow = await read('.github/workflows/desktop-release.yml');
 const cargoVersion = cargoToml.match(/^version = "([^"]+)"$/m)?.[1];
 
@@ -48,6 +49,10 @@ invariant(
   'Release workflow must use the current published tauri-action',
 );
 invariant(/includeUpdaterJson: true/.test(releaseWorkflow), 'Release workflow must upload latest.json');
+invariant(
+  /PKMN\.DMG\.Calc_#\{version\}_universal\.dmg/.test(homebrewCask),
+  'Homebrew cask must use the normalized GitHub release asset name',
+);
 
 const trackedKeys = execFileSync('git', ['ls-files', 'desktop/.keys'], {
   cwd: rootDir,

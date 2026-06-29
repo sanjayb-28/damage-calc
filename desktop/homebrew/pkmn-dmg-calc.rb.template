@@ -2,7 +2,7 @@ cask "pkmn-dmg-calc" do
   version "__VERSION__"
   sha256 "__DMG_SHA256__"
 
-  url "https://github.com/sanjayb-28/damage-calc/releases/download/desktop-v#{version}/PKMN%20DMG%20Calc_#{version}_universal.dmg"
+  url "https://github.com/sanjayb-28/damage-calc/releases/download/desktop-v#{version}/PKMN.DMG.Calc_#{version}_universal.dmg"
   name "PKMN DMG Calc"
   desc "Desktop Pokémon damage calculator"
   homepage "https://github.com/sanjayb-28/damage-calc"

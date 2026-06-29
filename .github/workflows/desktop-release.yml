@@ -4,10 +4,15 @@ on:
   push:
     branches: [master]
     paths:
-      - ".github/workflows/desktop-release.yml"
       - "build"
       - "calc/**"
-      - "desktop/**"
+      - "desktop/assets/**"
+      - "desktop/package.json"
+      - "desktop/package-lock.json"
+      - "desktop/runtime/**"
+      - "desktop/scripts/**"
+      - "desktop/src-tauri/**"
+      - "desktop/theme/**"
       - "package.json"
       - "package-lock.json"
       - "src/**"
