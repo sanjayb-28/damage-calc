@@ -18,10 +18,12 @@ jobs:
   sync:
     if: github.repository == 'sanjayb-28/damage-calc'
     runs-on: ubuntu-latest
+    env:
+      GH_REPO: ${{ github.repository }}
 
     steps:
       - name: Check out fork
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: master
           fetch-depth: 0
@@ -38,6 +40,15 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect missing desktop release
+        id: release
+        run: |
+          if git tag --points-at HEAD --list 'desktop-v*' | grep -q .; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Merge upstream
@@ -70,7 +81,7 @@ jobs:
 
       - name: Set up Node.js
         if: steps.changes.outputs.changed == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -99,7 +110,7 @@ jobs:
         run: git push origin HEAD:master
 
       - name: Dispatch desktop release
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true' || steps.release.outputs.needed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -109,5 +120,5 @@ jobs:
             -f reason="Automated upstream sync at $SHORT_SHA"
 
       - name: Summarize no-op
-        if: steps.changes.outputs.changed != 'true'
+        if: steps.changes.outputs.changed != 'true' && steps.release.outputs.needed != 'true'
         run: echo "Fork already contains upstream/master; no release was created." >> "$GITHUB_STEP_SUMMARY"
