@@ -2341,8 +2341,8 @@ var SETDEX_SV = {
     "Ubers UU Choice Scarf": {"ability":"Shadow Tag","item":"Choice Scarf","nature":"Bold","teraType":"Fairy","ivs":{"at":0},"evs":{"hp":248,"df":252,"sd":8},"moves":["Trick","Calm Mind","Rest","Charm"]}
   },
   "Duosion": {
-    "NFE Double Dance": {"ability":"Magic Guard","item":"Eviolite","nature":"Bold","ivs":{"at":0},"evs":{"hp":252,"df":252,"sd":4},"moves":["Acid Armor","Calm Mind","Recover","Stored Power"]},
-    "NFE Defensive Pivot": {"ability":"Regenerator","item":"Eviolite","nature":"Calm","evs":{"hp":252,"df":4,"sd":252},"moves":["Future Sight","Psychic","Thunder Wave","Recover"]}
+    "NFE Defensive Pivot": {"ability":"Regenerator","item":"Eviolite","nature":"Calm","evs":{"hp":252,"df":4,"sd":252},"moves":["Future Sight","Psychic","Thunder Wave","Recover"]},
+    "NFE Double Dance": {"ability":"Magic Guard","item":"Eviolite","nature":"Bold","ivs":{"at":0},"evs":{"hp":252,"df":252,"sd":4},"moves":["Acid Armor","Calm Mind","Stored Power","Recover"]}
   },
   "Reuniclus": {
     "OU Stallbreaker": {"ability":"Magic Guard","item":"Life Orb","nature":"Modest","teraType":"Fighting","evs":{"hp":252,"sa":212,"sp":44},"moves":["Psychic Noise","Knock Off","Focus Blast","Recover"]},
