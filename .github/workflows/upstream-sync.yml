@@ -51,19 +51,33 @@ jobs:
             echo "needed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Merge upstream
+      - name: Merge upstream application source
         id: merge
         if: steps.changes.outputs.changed == 'true'
-        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git merge --no-edit upstream/master; then
-            echo "conflict=false" >> "$GITHUB_OUTPUT"
-          else
+
+          BASE_SHA="$(git rev-parse HEAD)"
+          git merge --no-commit --no-ff upstream/master || true
+
+          if ! git rev-parse --verify MERGE_HEAD >/dev/null 2>&1; then
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Workflows belong to this fork. Keeping them out of upstream merges
+          # avoids GitHub's restriction on Actions tokens modifying workflows.
+          git restore --source="$BASE_SHA" --staged --worktree -- .github/workflows
+
+          if [[ -n "$(git diff --name-only --diff-filter=U)" ]]; then
             git merge --abort
             echo "conflict=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          git commit --no-edit
+          echo "conflict=false" >> "$GITHUB_OUTPUT"
 
       - name: Report merge conflict
         if: steps.merge.outputs.conflict == 'true'
