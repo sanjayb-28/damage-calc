@@ -1,9 +1,9 @@
 name: Update Sets
 
 on:
+  # Set updates arrive through the weekly upstream integration. Keep this
+  # workflow available for deliberate one-off refreshes only.
   workflow_dispatch:
-  schedule:
-    - cron: '27 23 */3 * *'
 
 jobs:
   scheduled:

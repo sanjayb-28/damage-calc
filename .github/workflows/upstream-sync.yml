@@ -1,8 +1,8 @@
 name: Sync upstream and release
 
 on:
-  schedule:
-    - cron: "17 5 */3 * *"
+  # Weekly synchronization is handled by the agent automation, which can
+  # adapt the desktop overlay before invoking this workflow manually.
   workflow_dispatch:
 
 permissions:
