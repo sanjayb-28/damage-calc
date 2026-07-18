@@ -30,6 +30,7 @@ test('desktop build vendors runtime scripts', async () => {
   const randoms = await readFile(path.join(desktopDir, 'dist', 'randoms.html'), 'utf8');
   const honkalculate = await readFile(path.join(desktopDir, 'dist', 'honkalculate.html'), 'utf8');
   assert.doesNotMatch(randoms, /src="https:\/\/data\.pkmn\.cc/);
+  assert.doesNotMatch(randoms, /gen8randomdoublesbattle/);
   assert.doesNotMatch(honkalculate, /(?:src|url\()=?["']?https:\/\/(?:maxcdn\.bootstrapcdn|cdn\.datatables)/);
   assert.match(honkalculate, /id="holder-0"/);
   assert.match(honkalculate, /id="holder-2"/);

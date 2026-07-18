@@ -77,6 +77,7 @@ var SETDEX_SS = {
     "National Dex Monotype Defensive (Poison)": {"ability":"Chlorophyll","item":"Venusaurite","nature":"Bold","evs":{"hp":252,"df":240,"sp":16},"moves":["Giga Drain","Sludge Bomb","Hidden Power Fire","Synthesis"]},
     "1v1 SubSeed": {"ability":"Chlorophyll","item":"Wide Lens","nature":"Timid","evs":{"hp":4,"df":252,"sp":252},"moves":["Sleep Powder","Leech Seed","Substitute","Sludge Bomb"]},
     "1v1 Custap Berry": {"ability":"Overgrow","item":"Custap Berry","nature":"Modest","evs":{"hp":68,"df":92,"sa":252,"sp":96},"moves":["Frenzy Plant","Sludge Bomb","Earthquake","Endure"]},
+    "VGC 2022 Chlorophyll Attacker (G-Max)": {"level":50,"ability":"Chlorophyll","item":"Life Orb","nature":"Modest","isGmax":true,"evs":{"hp":4,"sa":252,"sp":252},"moves":["Leaf Storm","Weather Ball","Earth Power","Sleep Powder"]},
     "Doubles OU Showdown Usage": {"ability":"Chlorophyll","item":"Assault Vest","nature":"Modest","evs":{"sa":252,"sd":4,"sp":252},"moves":["Sludge Bomb","Earth Power","Sleep Powder","Weather Ball"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Chlorophyll","item":"Coba Berry","nature":"Modest","evs":{"hp":156,"df":44,"sa":156,"sd":12,"sp":140},"moves":["Sleep Powder","Weather Ball","Leaf Storm","Earth Power"]},
     "CAP Showdown Usage": {"ability":"Chlorophyll","item":"Life Orb","nature":"Modest","evs":{"sa":252,"sd":4,"sp":252},"moves":["Weather Ball","Giga Drain","Growth","Earth Power"]}
@@ -85,9 +86,6 @@ var SETDEX_SS = {
     "National Dex Defensive": {"ability":"Thick Fat","item":"Venusaurite","nature":"Bold","evs":{"hp":248,"df":176,"sd":68,"sp":16},"moves":["Sludge Bomb","Synthesis","Earth Power","Hidden Power Fire"]},
     "National Dex Monotype Defensive (Grass)": {"ability":"Thick Fat","item":"Venusaurite","nature":"Bold","evs":{"hp":252,"df":240,"sp":16},"moves":["Sludge Bomb","Giga Drain","Hidden Power Fire","Synthesis"]},
     "National Dex Monotype Defensive (Poison)": {"ability":"Thick Fat","item":"Venusaurite","nature":"Bold","evs":{"hp":252,"df":240,"sp":16},"moves":["Giga Drain","Sludge Bomb","Hidden Power Fire","Synthesis"]}
-  },
-  "Venusaur-Gmax": {
-    "VGC 2022 Chlorophyll Attacker": {"level":50,"ability":"Chlorophyll","item":"Life Orb","nature":"Modest","evs":{"hp":4,"sa":252,"sp":252},"moves":["Leaf Storm","Weather Ball","Earth Power","Sleep Powder"]}
   },
   "Charmander": {
     "LC Sun Wallbreaker": {"level":5,"ability":"Solar Power","item":"Choice Scarf","nature":"Timid","evs":{"hp":44,"df":12,"sa":196,"sp":236},"moves":["Weather Ball","Overheat","Fire Blast","Sleep Talk"]}
@@ -106,6 +104,8 @@ var SETDEX_SS = {
     "National Dex Dragon Dance Sweeper": {"ability":"Blaze","item":"Charizardite X","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Dragon Dance","Flare Blitz","Dragon Claw","Roost"]},
     "National Dex Monotype Dragon Dance (Fire)": {"ability":"Blaze","item":"Charizardite X","nature":"Jolly","evs":{"at":252,"df":4,"sp":252},"moves":["Dragon Dance","Flare Blitz","Outrage","Roost"]},
     "National Dex Monotype Wallbreaker (Flying)": {"ability":"Blaze","item":"Charizardite Y","nature":"Timid","evs":{"sa":252,"sd":4,"sp":252},"moves":["Fire Blast","Solar Beam","Focus Blast","Roost"]},
+    "VGC 2022 Gigantamax": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","isGmax":true,"evs":{"hp":4,"sa":252,"sp":252},"moves":["Blast Burn","Hurricane","Heat Wave","Protect"]},
+    "VGC 2021 Gigantamax": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","isGmax":true,"evs":{"sa":252,"sd":4,"sp":252},"moves":["Heat Wave","Hurricane","Blast Burn","Protect"]},
     "UU Showdown Usage": {"ability":"Solar Power","item":"Choice Specs","nature":"Timid","evs":{"sa":252,"sd":4,"sp":252},"moves":["Air Slash","Solar Beam","Roost","Will-O-Wisp"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","evs":{"hp":4,"sa":252,"sp":252},"moves":["Hurricane","Protect","Blast Burn","Ancient Power"]},
     "VGC 2021 Showdown Usage": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","evs":{"hp":4,"sa":252,"sp":252},"moves":["Protect","Heat Wave","Blast Burn","Hurricane"]}
@@ -117,10 +117,6 @@ var SETDEX_SS = {
   "Charizard-Mega-X": {
     "National Dex Dragon Dance Sweeper": {"ability":"Tough Claws","item":"Charizardite X","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Dragon Dance","Flare Blitz","Dragon Claw","Roost"]},
     "National Dex Monotype Dragon Dance (Fire)": {"ability":"Tough Claws","item":"Charizardite X","nature":"Jolly","evs":{"at":252,"df":4,"sp":252},"moves":["Dragon Dance","Flare Blitz","Outrage","Roost"]}
-  },
-  "Charizard-Gmax": {
-    "VGC 2022 Gigantamax": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","evs":{"hp":4,"sa":252,"sp":252},"moves":["Blast Burn","Hurricane","Heat Wave","Protect"]},
-    "VGC 2021 Gigantamax": {"level":50,"ability":"Solar Power","item":"Life Orb","nature":"Timid","evs":{"sa":252,"sd":4,"sp":252},"moves":["Heat Wave","Hurricane","Blast Burn","Protect"]}
   },
   "Wartortle": {
     "NFE Shell Smash Sweeper": {"ability":"Torrent","item":"Eviolite","nature":"Modest","evs":{"hp":176,"sa":252,"sp":80},"moves":["Shell Smash","Hydro Pump","Ice Beam","Substitute"]},
@@ -568,9 +564,11 @@ var SETDEX_SS = {
   "Gyarados-Mega": {
     "National Dex Dragon Dance": {"ability":"Mold Breaker","item":"Gyaradosite","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Dragon Dance","Waterfall","Crunch","Substitute"]}
   },
-  "Lapras-Gmax": {
-    "Battle Stadium Singles G-Max Resonance": {"level":50,"ability":"Water Absorb","item":"Weakness Policy","nature":"Modest","evs":{"hp":252,"sa":252,"sp":4},"moves":["Freeze-Dry","Sparkling Aria","Sheer Cold","Ice Shard"]},
-    "Anything Goes Defensive": {"ability":"Water Absorb","item":"Heavy-Duty Boots","nature":"Calm","evs":{"hp":248,"df":8,"sd":252},"moves":["Sheer Cold","Horn Drill","Rest","Freeze-Dry"]}
+  "Lapras": {
+    "Battle Stadium Singles G-Max Resonance": {"level":50,"ability":"Water Absorb","item":"Weakness Policy","nature":"Modest","isGmax":true,"evs":{"hp":252,"sa":252,"sp":4},"moves":["Freeze-Dry","Sparkling Aria","Sheer Cold","Ice Shard"]},
+    "Anything Goes Defensive (G-Max)": {"ability":"Water Absorb","item":"Heavy-Duty Boots","nature":"Calm","isGmax":true,"evs":{"hp":248,"df":8,"sd":252},"moves":["Sheer Cold","Horn Drill","Rest","Freeze-Dry"]},
+    "Battle Stadium Singles Showdown Usage": {"level":50,"ability":"Water Absorb","item":"Light Clay","nature":"Modest","evs":{"hp":140,"df":116,"sa":252},"moves":["Sparkling Aria","Sheer Cold","Perish Song","Freeze-Dry"]},
+    "VGC 2021 Showdown Usage": {"level":50,"ability":"Water Absorb","item":"Light Clay","nature":"Modest","evs":{"hp":252,"sa":252,"sd":4},"moves":["Hydro Pump","Protect","Thunder","Freeze-Dry"]}
   },
   "Ditto": {
     "OU Imposter": {"ability":"Imposter","item":"Choice Scarf","nature":"Quiet","ivs":{"sp":0},"evs":{"hp":252,"at":4,"sa":252},"moves":["Transform"]},
@@ -641,11 +639,9 @@ var SETDEX_SS = {
     "RU CurseLax": {"ability":"Thick Fat","item":"Leftovers","nature":"Careful","evs":{"hp":208,"at":36,"df":172,"sd":84,"sp":8},"moves":["Curse","Body Slam","Earthquake","Rest"]},
     "NU CurseLax": {"ability":"Immunity","item":"Leftovers","nature":"Careful","evs":{"hp":12,"df":244,"sd":252},"moves":["Curse","Body Slam","Earthquake","Rest"]},
     "Monotype Curse Sweeper (Normal)": {"ability":"Thick Fat","item":"Leftovers","nature":"Careful","evs":{"hp":252,"df":120,"sd":136},"moves":["Curse","Darkest Lariat","Rest","Sleep Talk"]},
-    "National Dex RU CurseLax": {"ability":"Thick Fat","item":"Leftovers","nature":"Careful","evs":{"hp":208,"df":216,"sd":84},"moves":["Rest","Earthquake","Curse","Body Slam"]}
-  },
-  "Snorlax-Gmax": {
-    "Battle Stadium Singles Gmax Setup Sweeper": {"level":50,"ability":"Gluttony","item":"Figy Berry","nature":"Impish","evs":{"hp":228,"df":252,"sd":28},"moves":["Facade","Belly Drum","Heavy Slam","Earthquake"]},
-    "Battle Stadium Singles Yawn Support": {"level":50,"ability":"Thick Fat","item":"Leftovers","nature":"Impish","evs":{"hp":228,"df":252,"sd":28},"moves":["Facade","Yawn","Protect","Heavy Slam"]}
+    "National Dex RU CurseLax": {"ability":"Thick Fat","item":"Leftovers","nature":"Careful","evs":{"hp":208,"df":216,"sd":84},"moves":["Rest","Earthquake","Curse","Body Slam"]},
+    "Battle Stadium Singles Gmax Setup Sweeper": {"level":50,"ability":"Gluttony","item":"Figy Berry","nature":"Impish","isGmax":true,"evs":{"hp":228,"df":252,"sd":28},"moves":["Facade","Belly Drum","Heavy Slam","Earthquake"]},
+    "Battle Stadium Singles Yawn Support (G-Max)": {"level":50,"ability":"Thick Fat","item":"Leftovers","nature":"Impish","isGmax":true,"evs":{"hp":228,"df":252,"sd":28},"moves":["Facade","Yawn","Protect","Heavy Slam"]}
   },
   "Articuno": {
     "UU Specially Defensive": {"ability":"Pressure","item":"Heavy-Duty Boots","nature":"Calm","evs":{"hp":248,"sd":204,"sp":56},"moves":["Freeze-Dry","Defog","Heal Bell","Roost"]},
@@ -3816,19 +3812,17 @@ var SETDEX_SS = {
     "1v1 Grassy Seed": {"ability":"Grassy Surge","item":"Grassy Seed","nature":"Adamant","evs":{"hp":56,"at":228,"df":88,"sp":136},"moves":["Swords Dance","Grassy Glide","Knock Off","Acrobatics"]},
     "1v1 Assault Vest": {"ability":"Grassy Surge","item":"Assault Vest","nature":"Careful","evs":{"hp":184,"at":84,"sd":240},"moves":["Fake Out","High Horsepower","Wood Hammer","Grassy Glide"]},
     "1v1 SubSeed": {"ability":"Grassy Surge","item":"Grassy Seed","nature":"Impish","evs":{"hp":136,"df":140,"sp":232},"moves":["Drum Beating","Leech Seed","Substitute","Protect"]},
+    "VGC 2022 Miracle Seed (G-Max)": {"level":50,"ability":"Grassy Surge","item":"Miracle Seed","nature":"Adamant","isGmax":true,"evs":{"hp":220,"at":220,"df":4,"sd":4,"sp":60},"moves":["Grassy Glide","Fake Out","High Horsepower","Protect"]},
+    "VGC 2022 Assault Vest (G-Max)": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","isGmax":true,"evs":{"hp":220,"at":196,"df":4,"sd":24,"sp":60},"moves":["Grassy Glide","Fake Out","High Horsepower","U-turn"]},
+    "VGC 2021 Assault Vest (G-Max)": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","isGmax":true,"evs":{"hp":252,"at":76,"df":4,"sd":172,"sp":4},"moves":["Grassy Glide","Wood Hammer","U-turn","Fake Out"]},
+    "VGC 2021 Miracle Seed (G-Max)": {"level":50,"ability":"Grassy Surge","item":"Miracle Seed","nature":"Adamant","isGmax":true,"evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","Wood Hammer","Fake Out","Protect"]},
+    "Battle Stadium Singles G-Max Choice Attacker": {"level":50,"ability":"Grassy Surge","item":"Choice Band","nature":"Adamant","isGmax":true,"evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","U-turn","Knock Off","High Horsepower"]},
+    "Battle Stadium Singles G-Max General Offense": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","isGmax":true,"evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","Knock Off","Drum Beating","U-turn"]},
+    "Battle Stadium Singles G-Max Swords Dance Sweeper": {"level":50,"ability":"Grassy Surge","item":"Grassy Seed","nature":"Adamant","isGmax":true,"evs":{"hp":100,"at":252,"sp":156},"moves":["Swords Dance","Grassy Glide","Superpower","Knock Off"]},
     "Battle Stadium Singles Showdown Usage": {"level":50,"ability":"Grassy Surge","item":"Choice Band","nature":"Adamant","evs":{"hp":252,"at":252,"df":4},"moves":["Grassy Glide","U-turn","High Horsepower","Wood Hammer"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","evs":{"hp":188,"at":252,"df":68},"moves":["Grassy Glide","Fake Out","High Horsepower","Knock Off"]},
     "VGC 2021 Showdown Usage": {"level":50,"ability":"Grassy Surge","item":"Miracle Seed","nature":"Adamant","evs":{"hp":252,"at":252,"sd":4},"moves":["Grassy Glide","Fake Out","U-turn","Protect"]},
     "CAP Showdown Usage": {"ability":"Grassy Surge","item":"Choice Band","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["Grassy Glide","U-turn","Wood Hammer","Superpower"]}
-  },
-  "Rillaboom-Gmax": {
-    "VGC 2022 Miracle Seed": {"level":50,"ability":"Grassy Surge","item":"Miracle Seed","nature":"Adamant","evs":{"hp":220,"at":220,"df":4,"sd":4,"sp":60},"moves":["Grassy Glide","Fake Out","High Horsepower","Protect"]},
-    "VGC 2022 Assault Vest": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","evs":{"hp":220,"at":196,"df":4,"sd":24,"sp":60},"moves":["Grassy Glide","Fake Out","High Horsepower","U-turn"]},
-    "VGC 2021 Assault Vest": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","evs":{"hp":252,"at":76,"df":4,"sd":172,"sp":4},"moves":["Grassy Glide","Wood Hammer","U-turn","Fake Out"]},
-    "VGC 2021 Miracle Seed": {"level":50,"ability":"Grassy Surge","item":"Miracle Seed","nature":"Adamant","evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","Wood Hammer","Fake Out","Protect"]},
-    "Battle Stadium Singles G-Max Choice Attacker": {"level":50,"ability":"Grassy Surge","item":"Choice Band","nature":"Adamant","evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","U-turn","Knock Off","High Horsepower"]},
-    "Battle Stadium Singles G-Max General Offense": {"level":50,"ability":"Grassy Surge","item":"Assault Vest","nature":"Adamant","evs":{"hp":252,"at":252,"sp":4},"moves":["Grassy Glide","Knock Off","Drum Beating","U-turn"]},
-    "Battle Stadium Singles G-Max Swords Dance Sweeper": {"level":50,"ability":"Grassy Surge","item":"Grassy Seed","nature":"Adamant","evs":{"hp":100,"at":252,"sp":156},"moves":["Swords Dance","Grassy Glide","Superpower","Knock Off"]}
   },
   "Scorbunny": {
     "LC All-out Attacker": {"level":5,"ability":"Libero","item":"Berry Juice","nature":"Jolly","evs":{"hp":36,"at":188,"df":36,"sd":36,"sp":204},"moves":["Blaze Kick","Gunk Shot","U-turn","High Jump Kick"]}
@@ -3845,18 +3839,16 @@ var SETDEX_SS = {
     "Monotype Offensive (Fire)": {"ability":"Libero","item":"Heavy-Duty Boots","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","Sucker Punch","Low Kick","Bulk Up"]},
     "National Dex Monotype Bulk Up (Fire)": {"ability":"Libero","item":"Heavy-Duty Boots","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Bulk Up","Pyro Ball","High Jump Kick","Sucker Punch"]},
     "National Dex Monotype Offensive Pivot (Fire)": {"ability":"Libero","item":"Heavy-Duty Boots","nature":"Jolly","evs":{"at":252,"df":4,"sp":252},"moves":["Pyro Ball","U-turn","High Jump Kick","Sucker Punch"]},
+    "Battle Stadium Singles Gmax Libero": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Sucker Punch"]},
+    "Battle Stadium Singles Sash (G-Max)": {"level":50,"ability":"Libero","item":"Focus Sash","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","Counter","Sucker Punch","Gunk Shot"]},
+    "Battle Stadium Singles Gmax Choice": {"level":50,"ability":"Libero","item":"Choice Scarf","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["High Jump Kick","U-turn","Pyro Ball","Gunk Shot"]},
+    "Battle Stadium Singles SUPER STRIKER (Gigantamax Attacker)": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Sucker Punch"]},
+    "Battle Stadium Singles Focus Sash (G-Max)": {"level":50,"ability":"Libero","item":"Focus Sash","nature":"Adamant","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Sucker Punch","Gunk Shot"]},
+    "Battle Stadium Singles Choice Scarf (G-Max)": {"level":50,"ability":"Libero","item":"Choice Scarf","nature":"Adamant","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["High Jump Kick","U-turn","Pyro Ball","Gunk Shot"]},
     "Battle Stadium Singles Showdown Usage": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Sucker Punch"]},
     "Anything Goes Showdown Usage": {"ability":"Libero","item":"Heavy-Duty Boots","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","Sucker Punch","Court Change","High Jump Kick"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","evs":{"hp":4,"at":248,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Protect"]},
     "VGC 2021 Showdown Usage": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","Bounce","Sucker Punch","High Jump Kick"]}
-  },
-  "Cinderace-Gmax": {
-    "Battle Stadium Singles Gmax Libero": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Sucker Punch"]},
-    "Battle Stadium Singles Sash": {"level":50,"ability":"Libero","item":"Focus Sash","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","Counter","Sucker Punch","Gunk Shot"]},
-    "Battle Stadium Singles Gmax Choice": {"level":50,"ability":"Libero","item":"Choice Scarf","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["High Jump Kick","U-turn","Pyro Ball","Gunk Shot"]},
-    "Battle Stadium Singles SUPER STRIKER (Gigantamax Attacker)": {"level":50,"ability":"Libero","item":"Life Orb","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Bounce","Sucker Punch"]},
-    "Battle Stadium Singles Focus Sash": {"level":50,"ability":"Libero","item":"Focus Sash","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["Pyro Ball","High Jump Kick","Sucker Punch","Gunk Shot"]},
-    "Battle Stadium Singles Choice Scarf": {"level":50,"ability":"Libero","item":"Choice Scarf","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["High Jump Kick","U-turn","Pyro Ball","Gunk Shot"]}
   },
   "Inteleon": {
     "NU Choice Specs": {"ability":"Torrent","item":"Choice Specs","nature":"Timid","evs":{"sa":252,"sd":4,"sp":252},"moves":["Hydro Pump","Dark Pulse","Ice Beam","U-turn"]}
@@ -4178,14 +4170,12 @@ var SETDEX_SS = {
     "1v1 Choice Band": {"ability":"Unseen Fist","item":"Choice Band","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","Fling"]},
     "1v1 Choice Scarf": {"ability":"Unseen Fist","item":"Choice Scarf","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","Fire Punch","Ice Punch"]},
     "1v1 Life Orb": {"ability":"Unseen Fist","item":"Life Orb","nature":"Adamant","evs":{"hp":4,"at":96,"sd":188,"sp":220},"moves":["Wicked Blow","Close Combat","Sucker Punch","Taunt"]},
+    "Battle Stadium Singles Choice Item (G-Max)": {"level":50,"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","Thunder Punch"]},
+    "Battle Stadium Singles Focus Sash (G-Max)": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","isGmax":true,"evs":{"hp":4,"at":252,"sp":252},"moves":["Wicked Blow","Counter","Sucker Punch","Close Combat"]},
+    "Battle Stadium Singles BEAR KNUCKLE (Choice Item Attacker) (G-Max)": {"level":50,"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","isGmax":true,"evs":{"hp":4,"at":252,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","U-turn"]},
+    "Anything Goes Choice Band (G-Max)": {"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","isGmax":true,"evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","U-turn","Stone Edge"]},
     "Battle Stadium Singles Showdown Usage": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","Stone Edge"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Unseen Fist","item":"Choice Scarf","evs":{"hp":4,"at":252,"sp":252},"moves":["Wicked Blow","Close Combat","U-turn","Rock Tomb"]}
-  },
-  "Urshifu-Gmax": {
-    "Battle Stadium Singles Choice Item": {"level":50,"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","Thunder Punch"]},
-    "Battle Stadium Singles Focus Sash": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","evs":{"hp":4,"at":252,"sp":252},"moves":["Wicked Blow","Counter","Sucker Punch","Close Combat"]},
-    "Battle Stadium Singles BEAR KNUCKLE (Choice Item Attacker)": {"level":50,"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","evs":{"hp":4,"at":252,"sp":252},"moves":["Wicked Blow","Close Combat","Sucker Punch","U-turn"]},
-    "Anything Goes Choice Band": {"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Wicked Blow","Close Combat","U-turn","Stone Edge"]}
   },
   "Urshifu-Rapid-Strike": {
     "OU Protective Pads": {"ability":"Unseen Fist","item":"Protective Pads","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Surging Strikes","Close Combat","U-turn","Taunt"]},
@@ -4205,11 +4195,9 @@ var SETDEX_SS = {
     "1v1 Assault Vest": {"ability":"Unseen Fist","item":"Assault Vest","nature":"Adamant","evs":{"hp":24,"at":228,"sd":172,"sp":84},"moves":["Low Sweep","Surging Strikes","Superpower","Ice Punch"]},
     "1v1 Wacan Berry": {"ability":"Unseen Fist","item":"Wacan Berry","nature":"Adamant","evs":{"hp":204,"at":164,"sd":140},"moves":["Low Sweep","Surging Strikes","Superpower","Ice Punch"]},
     "CAP Choice Band": {"ability":"Unseen Fist","item":"Choice Band","nature":"Jolly","evs":{"at":252,"df":4,"sp":252},"moves":["Close Combat","Surging Strikes","U-turn","Aqua Jet"]},
+    "VGC 2021 Offensive (G-Max)": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","isGmax":true,"evs":{"hp":4,"at":252,"sp":252},"moves":["Surging Strikes","Close Combat","Aqua Jet","Detect"]},
     "VGC 2022 Showdown Usage": {"level":50,"ability":"Unseen Fist","item":"Choice Scarf","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Surging Strikes","Close Combat","U-turn","Rock Tomb"]},
     "VGC 2021 Showdown Usage": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","evs":{"at":252,"sd":4,"sp":252},"moves":["Surging Strikes","Close Combat","Aqua Jet","U-turn"]}
-  },
-  "Urshifu-Rapid-Strike-Gmax": {
-    "VGC 2021 Offensive": {"level":50,"ability":"Unseen Fist","item":"Focus Sash","nature":"Jolly","evs":{"hp":4,"at":252,"sp":252},"moves":["Surging Strikes","Close Combat","Aqua Jet","Detect"]}
   },
   "Zarude": {
     "OU Bulk Up": {"ability":"Leaf Guard","item":"Leftovers","nature":"Jolly","evs":{"hp":4,"at":252,"sp":252},"moves":["Bulk Up","Jungle Healing","Power Whip","Darkest Lariat"]},
@@ -4460,10 +4448,6 @@ var SETDEX_SS = {
   },
   "Honchkrow": {
     "National Dex Monotype Showdown Usage": {"ability":"Moxie","item":"Life Orb","nature":"Adamant","evs":{"at":252,"sd":4,"sp":252},"moves":["Brave Bird","Sucker Punch","Superpower","Night Slash"]}
-  },
-  "Lapras": {
-    "Battle Stadium Singles Showdown Usage": {"level":50,"ability":"Water Absorb","item":"Light Clay","nature":"Modest","evs":{"hp":140,"df":116,"sa":252},"moves":["Sparkling Aria","Sheer Cold","Perish Song","Freeze-Dry"]},
-    "VGC 2021 Showdown Usage": {"level":50,"ability":"Water Absorb","item":"Light Clay","nature":"Modest","evs":{"hp":252,"sa":252,"sd":4},"moves":["Hydro Pump","Protect","Thunder","Freeze-Dry"]}
   },
   "Inkay": {
     "LC Showdown Usage": {"level":5,"ability":"Contrary","item":"Eviolite","nature":"Relaxed","evs":{"hp":12,"at":244,"df":172,"sd":68},"moves":["Superpower","Knock Off","Psycho Cut","Trick Room"]}

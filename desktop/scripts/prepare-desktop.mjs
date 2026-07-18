@@ -30,6 +30,17 @@ const allowedRemoteAssets = new Set([
   'cdn.datatables.net',
 ]);
 
+// Upstream still references this retired dataset, but the authoritative
+// randbats repository no longer publishes it. It is optional legacy data, so
+// omit its script instead of making every desktop build depend on a 404.
+const retiredRemoteScripts = new Set([
+  'https://data.pkmn.cc/randbats/js/gen8randomdoublesbattle.js',
+]);
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function buildUpstream() {
   if (process.env.PKMN_DESKTOP_SKIP_UPSTREAM_BUILD === '1') return;
   execFileSync('npm', ['run', 'build'], {cwd: rootDir, stdio: 'inherit'});
@@ -92,6 +103,14 @@ async function transformHtml(file) {
       '    <link rel="stylesheet" href="./desktop/desktop.css">\n</head>'
     )
     .replace('</body>', '    <script src="./desktop/desktop.js"></script>\n</body>');
+
+  for (const remoteUrl of retiredRemoteScripts) {
+    const escapedUrl = escapeRegExp(remoteUrl);
+    html = html.replace(
+      new RegExp(`<script\\b[^>]*\\bsrc=["']${escapedUrl}(?:\\?[^"']*)?["'][^>]*>\\s*</script>`, 'gi'),
+      '',
+    );
+  }
 
   const remoteUrls = new Set();
   for (const match of html.matchAll(/(?:src=["']|url\()(?<url>https:\/\/[^"')?]+(?:\?[^"')]+)?)/g)) {
