@@ -751,6 +751,16 @@ describe('calc', () => {
         );
       });
     });
+    inGens([2, 9], ({gen, calculate, Pokemon, Move, Field}) => {
+      test(`Nightmare damage is included in end of turn damage (gen ${gen})`, () => {
+        const field = Field({defenderSide: {isNightmared: true}});
+        const chansey = Pokemon('Chansey', {level: 1});
+        const mew = Pokemon('Mew', {level: 30, ivs: {hp: 0}});
+        const result = calculate(chansey, mew, Move('Seismic Toss'), field);
+        expect(result.damage).toBe(1);
+        expect(result.desc()).toContain('after Nightmare damage');
+      });
+    });
     inGens([3, 9], ({gen, calculate, Pokemon, Move, Field}) => {
       test(`End of turn damage is calculated correctly on the first turn (gen ${gen})`, () => {
         const field = Field({
@@ -1298,6 +1308,18 @@ describe('calc', () => {
         expect(result.range()).toEqual([120, 142]);
         // 100 damage * (50% heal * ~1.3 big root boost = ~64.99% heal) truncates to 64 HP recovered
         expect(result.recovery().recovery).toEqual([64, 64]);
+      });
+      test('Dragonize only boosts Normal-type moves', () => {
+        const defender = Pokemon('Mew');
+        const dragonize = Pokemon('Mew', {ability: 'Dragonize'});
+        const baseline = Pokemon('Mew', {ability: 'Synchronize'});
+
+        const converted = calculate(dragonize, defender, Move('Tackle'));
+        expect(converted.move.type).toBe('Dragon');
+
+        const waterDamage = calculate(dragonize, defender, Move('Waterfall')).range();
+        const baselineWaterDamage = calculate(baseline, defender, Move('Waterfall')).range();
+        expect(waterDamage).toEqual(baselineWaterDamage);
       });
       test('Loaded Field', () => {
         const field = Field({

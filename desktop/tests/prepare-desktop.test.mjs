@@ -36,6 +36,21 @@ test('desktop build vendors runtime scripts', async () => {
   assert.match(honkalculate, /id="holder-2"/);
 });
 
+test('desktop build preserves Nightmare field controls', async () => {
+  for (const file of ['index.html', 'randoms.html', 'oms.html', 'champions.html', 'honkalculate.html']) {
+    const html = await readFile(path.join(desktopDir, 'dist', file), 'utf8');
+    assert.match(html, /id="nightmareL"/);
+    assert.match(html, /id="nightmareR"/);
+  }
+
+  const index = await readFile(path.join(desktopDir, 'dist', 'index.html'), 'utf8');
+  assert.match(index, /id="selectNightmareInstruction"/);
+  assert.doesNotMatch(index, /id="selectLeechSeedInstruction">[^<]*Nightmare/);
+
+  const controls = await readFile(path.join(desktopDir, 'dist', 'js', 'shared_controls.js'), 'utf8');
+  assert.match(controls, /isNightmared/);
+});
+
 test('desktop background is procedural and move colors are live', async () => {
   const css = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.css'), 'utf8');
   const runtime = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.js'), 'utf8');
