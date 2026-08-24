@@ -51,6 +51,29 @@ test('desktop build preserves Nightmare field controls', async () => {
   assert.match(controls, /isNightmared/);
 });
 
+test('desktop build preserves Charge field controls and accessibility wiring', async () => {
+  for (const file of ['index.html', 'randoms.html', 'champions.html', 'honkalculate.html']) {
+    const html = await readFile(path.join(desktopDir, 'dist', file), 'utf8');
+    assert.match(html, /id="chargeL"/);
+    assert.match(html, /id="chargeR"/);
+    assert.match(html, /id="selectChargeInstruction"/);
+    assert.match(html, /aria-describedby="selectChargeInstruction"/);
+  }
+
+  const honkalculate = await readFile(path.join(desktopDir, 'dist', 'honkalculate.html'), 'utf8');
+  assert.match(
+    honkalculate,
+    /<div class="btn-group gen-specific g3 g4 g5 g6 g7 g8 g9">\s*<div class="left"[^>]*>\s*<div hidden id="selectChargeInstruction"/,
+  );
+  assert.doesNotMatch(
+    honkalculate,
+    /<tr class="gen-specific g3 g4 g5 g6 g7 g8 g9">\s*<td><div class="left"[^>]*Charge/,
+  );
+
+  const controls = await readFile(path.join(desktopDir, 'dist', 'js', 'shared_controls.js'), 'utf8');
+  assert.match(controls, /isCharge/);
+});
+
 test('desktop background is procedural and move colors are live', async () => {
   const css = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.css'), 'utf8');
   const runtime = await readFile(path.join(desktopDir, 'dist', 'desktop', 'desktop.js'), 'utf8');
